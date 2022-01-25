@@ -10,7 +10,7 @@ const apollo = new ApolloServer({
   resolvers,
   typeDefs,
   context: () => {
-    return client;
+    return { client };
   },
 });
 
