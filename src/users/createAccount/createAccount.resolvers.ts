@@ -13,11 +13,14 @@ const resolvers: Resolvers = {
           where: {
             username,
           },
+          select: {
+            id: true,
+          },
         });
         if (existingUsername) {
           return {
             ok: false,
-            error: "이미 존재하는 사용자 이름 입니다.",
+            error: "이미 사용중인 사용자 이름 입니다.",
           };
         }
         const existingEmail = await client.user.findUnique({

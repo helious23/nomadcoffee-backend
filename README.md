@@ -8,3 +8,12 @@ Making NomadCoffee Backend with Prisma, Apollo, Graphql, Typescript
 ### Day 3
 - [x] User Model
 - [x] Create Account
+
+### Day 4,5
+- [x] Login
+- [x] Edit Profile
+- [x] Change Avatar (Image Upload)
+- [x] See Profile
+
+### Day 6,7
+- [ ] Day off
