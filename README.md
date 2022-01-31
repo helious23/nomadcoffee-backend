@@ -16,4 +16,9 @@ Making NomadCoffee Backend with Prisma, Apollo, Graphql, Typescript
 - [x] See Profile
 
 ### Day 6,7
-- [ ] Day off
+- [x] Day off
+
+### Day 8
+- [x] toggleFollow
+- [x] follows & following computed fields w/ pagination
+- [x] searchUsers
