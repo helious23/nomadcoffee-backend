@@ -11,6 +11,7 @@ export default gql`
     githubUsername: String
     followings(lastId: Int): [User]
     followers(lastId: Int): [User]
+    shops: [CoffeeShop]
     createdAt: String!
     updatedAt: String!
     totalFollowers: Int!

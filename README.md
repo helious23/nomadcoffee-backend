@@ -22,3 +22,11 @@ Making NomadCoffee Backend with Prisma, Apollo, Graphql, Typescript
 - [x] toggleFollow
 - [x] follows & following computed fields w/ pagination
 - [x] searchUsers
+
+## Day 9, 10
+- [x] Create CoffeeShop w/ categories
+- [x] See CoffeeShops
+- [x] See CoffeeShop
+- [x] See Category
+- [x] See Categories
+- [x] Edit CoffeeShop
