@@ -24,6 +24,8 @@ model User {
   shops          CoffeeShop[]
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
+  likes          Like[]
+  comments       Comment[]
 }
 
 model CoffeeShopPhoto {
@@ -36,17 +38,20 @@ model CoffeeShopPhoto {
 }
 
 model CoffeeShop {
-  id         Int               @id @default(autoincrement())
-  name       String
-  slug       String            @unique
-  latitude   String
-  longitude  String
-  photos     CoffeeShopPhoto[]
-  user       User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId     Int
-  categories Category[]
-  createdAt  DateTime          @default(now())
-  updatedAt  DateTime          @updatedAt
+  id          Int               @id @default(autoincrement())
+  name        String
+  slug        String            @unique
+  latitude    String
+  longitude   String
+  description String?
+  photos      CoffeeShopPhoto[]
+  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      Int
+  categories  Category[]
+  likes       Like[]
+  comments    Comment[]
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
 }
 
 model Category {
@@ -56,4 +61,28 @@ model Category {
   shops     CoffeeShop[]
   createdAt DateTime     @default(now())
   updatedAt DateTime     @updatedAt
+}
+
+model Like {
+  id           Int        @id @default(autoincrement())
+  shop         CoffeeShop @relation(fields: [coffeeShopId], references: [id], onDelete: Cascade)
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  coffeeShopId Int
+  userId       Int
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@unique([coffeeShopId, userId])
+}
+
+model Comment {
+  id           Int        @id @default(autoincrement())
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shop         CoffeeShop @relation(fields: [coffeeShopId], references: [id], onDelete: Cascade)
+  userId       Int
+  coffeeShopId Int
+  payload      String
+  rating       Int
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
 }

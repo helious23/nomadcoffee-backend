@@ -12,6 +12,7 @@ export default gql`
       name: String!
       latitude: String!
       longitude: String!
+      description: String
       categories: [String]!
       photos: [Upload]
     ): createCoffeeShopResult!

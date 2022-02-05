@@ -14,9 +14,17 @@ export default gql`
     slug: String!
     latitude: String!
     longitude: String!
+    description: String
     photos: [CoffeeShopPhoto]
     user: User!
     categories: [Category!]!
+    likes: Int!
+    commentNumber: Int!
+    comments: [Comment]
+    isMine: Boolean!
+    isLiked: Boolean!
+    likedBy: User
+    averageRating: Float!
     createdAt: String!
     updatedAt: String!
   }
@@ -26,6 +34,18 @@ export default gql`
     slug: String!
     shops: [CoffeeShop]
     totalShops: Int!
+    createdAt: String!
+    updatedAt: String!
+  }
+
+  type ShopsResult {
+    results: [CoffeeShop]
+    totalPages: Int!
+  }
+
+  type Like {
+    id: Int!
+    shop: CoffeeShop!
     createdAt: String!
     updatedAt: String!
   }
