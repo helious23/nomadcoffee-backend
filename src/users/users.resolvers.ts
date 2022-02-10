@@ -2,6 +2,8 @@ import { Resolvers } from "../types";
 
 const resolvers: Resolvers = {
   User: {
+    totalShops: ({ id }, _, { client }) =>
+      client.coffeeShop.count({ where: { userId: id } }),
     followers: ({ id }, { lastId }, { client }) =>
       client.user.findMany({
         where: {
@@ -73,6 +75,20 @@ const resolvers: Resolvers = {
         return false;
       }
       return id === loggedInUser.id;
+    },
+
+    shops: async ({ id }, { page }, { client }) => {
+      const results = await client.user
+        .findUnique({ where: { id } })
+        .shops({ take: 6, skip: (page - 1) * 6 });
+      const totalMyShops = await client.coffeeShop.count({
+        where: { userId: id },
+      });
+      return {
+        ok: true,
+        results,
+        totalPages: Math.ceil(totalMyShops / 6),
+      };
     },
   },
 };

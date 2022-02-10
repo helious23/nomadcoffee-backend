@@ -8,7 +8,7 @@ const resolvers: Resolvers = {
     editCoffeeShop: protectedResolver(
       async (
         _,
-        { id, name, latitude, longitude, categories, photos },
+        { id, name, latitude, longitude, categories, photos, description },
         { client, loggedInUser }
       ) => {
         const coffeeShop = await client.coffeeShop.findFirst({
@@ -40,6 +40,7 @@ const resolvers: Resolvers = {
             name,
             latitude,
             longitude,
+            description,
             slug: editedCoffeeShopSlug,
             categories: {
               disconnect: coffeeShop.categories,
@@ -48,10 +49,26 @@ const resolvers: Resolvers = {
           },
         });
 
+        const oldPhotos = await client.coffeeShopPhoto.findMany({
+          where: { coffeeShopId: id },
+        });
         let coffeeShopPhotos = [];
         if (photos) {
           // 삭제 resolver 따로 구현함. 기존 사진 삭제 시 사용
-          // 바뀐 사진만 업로드
+          // 사진 바꿀 경우 기존 사진 모두 삭제 후 업로드
+          for (let i = 0; i < oldPhotos.length; i++) {
+            await deleteS3(
+              oldPhotos[i].url,
+              loggedInUser.username,
+              `${editedCoffeeShopSlug ? editedCoffeeShopSlug : coffeeShop.slug}`
+            );
+            await client.coffeeShopPhoto.delete({
+              where: {
+                id: oldPhotos[i].id,
+              },
+            });
+          }
+
           for (let i = 0; i < photos.length; i++) {
             const photoUrl = await uploadToS3(
               photos[i],

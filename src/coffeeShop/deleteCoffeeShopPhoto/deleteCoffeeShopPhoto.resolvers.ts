@@ -34,6 +34,7 @@ const resolvers: Resolvers = {
         });
         return {
           ok: true,
+          id,
         };
       }
     ),

@@ -15,6 +15,7 @@ export default gql`
       longitude: String
       categories: [String]
       photos: [Upload]
+      description: String
     ): EditCoffeeShopResult!
   }
 `;

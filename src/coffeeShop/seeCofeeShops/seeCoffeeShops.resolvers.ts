@@ -2,10 +2,11 @@ import { Resolvers } from "../../types";
 
 const resolvers: Resolvers = {
   Query: {
-    seeCoffeeShops: (_, { page }, { client }) =>
+    seeCoffeeShops: (_, { lastId }, { client }) =>
       client.coffeeShop.findMany({
-        take: 5,
-        skip: (page - 1) * 5,
+        take: 2,
+        skip: lastId ? 1 : 0,
+        ...(lastId && { cursor: { id: lastId } }),
       }),
   },
 };

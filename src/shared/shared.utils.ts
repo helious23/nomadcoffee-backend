@@ -8,7 +8,11 @@ AWS.config.update({
   region: process.env.AWS_S3_REGION,
 });
 
-const Bucket = "nomadcoffee-uploads-challenge";
+const Bucket =
+  process.env.NODE_ENV === "dev"
+    ? "nomadcoffee-uploads-challenge"
+    : "nomadcoffee-challenge-deploy";
+
 const bucketInstance = new AWS.S3();
 
 export const uploadToS3 = async (
@@ -45,7 +49,7 @@ export const deleteS3 = async (
       if (error) {
         console.log(error.message);
       } else {
-        console.log("deleted");
+        console.log("deleted", data);
       }
     })
     .promise();
