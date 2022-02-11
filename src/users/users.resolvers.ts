@@ -80,14 +80,14 @@ const resolvers: Resolvers = {
     shops: async ({ id }, { page }, { client }) => {
       const results = await client.user
         .findUnique({ where: { id } })
-        .shops({ take: 6, skip: (page - 1) * 6 });
+        .shops({ take: 9, skip: (page - 1) * 9 });
       const totalMyShops = await client.coffeeShop.count({
         where: { userId: id },
       });
       return {
         ok: true,
         results,
-        totalPages: Math.ceil(totalMyShops / 6),
+        totalPages: Math.ceil(totalMyShops / 9),
       };
     },
   },
