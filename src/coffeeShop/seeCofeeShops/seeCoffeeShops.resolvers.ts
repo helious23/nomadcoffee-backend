@@ -4,7 +4,7 @@ const resolvers: Resolvers = {
   Query: {
     seeCoffeeShops: (_, { lastId }, { client }) =>
       client.coffeeShop.findMany({
-        take: 2,
+        take: 5,
         skip: lastId ? 1 : 0,
         ...(lastId && { cursor: { id: lastId } }),
       }),
