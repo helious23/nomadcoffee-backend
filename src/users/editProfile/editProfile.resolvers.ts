@@ -99,6 +99,7 @@ const resolvers: Resolvers = {
           if (updatedUser.id) {
             return {
               ok: true,
+              avatarURL,
             };
           } else {
             return {
