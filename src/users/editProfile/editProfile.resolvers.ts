@@ -36,15 +36,17 @@ const resolvers: Resolvers = {
           }
 
           if (username) {
-            const existUsername = await client.user.findUnique({
-              where: { username },
-              select: { id: true },
-            });
-            if (existUsername) {
-              return {
-                ok: false,
-                error: "이미 사용중인 사용자 이름 입니다.",
-              };
+            if (username !== loggedInUser.username) {
+              const existUsername = await client.user.findUnique({
+                where: { username },
+                select: { id: true },
+              });
+              if (existUsername) {
+                return {
+                  ok: false,
+                  error: "이미 사용중인 사용자 이름 입니다.",
+                };
+              }
             }
           }
 
