@@ -4,9 +4,9 @@ import { protectedResolver } from "../users.utils";
 const resolvers: Resolvers = {
   Mutation: {
     toggleFollow: protectedResolver(
-      async (_, { username }, { loggedInUser, client }) => {
+      async (_, { id }, { loggedInUser, client }) => {
         const exist = await client.user.findUnique({
-          where: { username },
+          where: { id },
           select: { id: true },
         });
         if (!exist) return { ok: false, error: "사용자를 찾을 수 없습니다." };
@@ -16,7 +16,7 @@ const resolvers: Resolvers = {
             id: loggedInUser.id,
             following: {
               some: {
-                username,
+                id,
               },
             },
           },
@@ -33,7 +33,7 @@ const resolvers: Resolvers = {
             data: {
               following: {
                 connect: {
-                  username,
+                  id,
                 },
               },
             },
@@ -46,7 +46,7 @@ const resolvers: Resolvers = {
             data: {
               following: {
                 disconnect: {
-                  username,
+                  id,
                 },
               },
             },

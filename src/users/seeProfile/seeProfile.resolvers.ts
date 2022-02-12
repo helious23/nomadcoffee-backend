@@ -2,10 +2,10 @@ import { Resolvers } from "../../types";
 
 const resolvers: Resolvers = {
   Query: {
-    seeProfile: (_, { username }, { client }) =>
+    seeProfile: (_, { id }, { client }) =>
       client.user.findUnique({
         where: {
-          username,
+          id,
         },
       }),
   },
