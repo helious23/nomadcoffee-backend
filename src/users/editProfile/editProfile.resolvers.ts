@@ -51,16 +51,18 @@ const resolvers: Resolvers = {
           }
 
           if (email) {
-            const existingEmail = await client.user.findUnique({
-              where: {
-                email,
-              },
-            });
-            if (existingEmail) {
-              return {
-                ok: false,
-                error: "이미 사용중인 이메일 입니다.",
-              };
+            if (email !== loggedInUser.email) {
+              const existingEmail = await client.user.findUnique({
+                where: {
+                  email,
+                },
+              });
+              if (existingEmail) {
+                return {
+                  ok: false,
+                  error: "이미 사용중인 이메일 입니다.",
+                };
+              }
             }
           }
 
