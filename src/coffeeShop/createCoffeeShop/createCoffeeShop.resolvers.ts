@@ -11,71 +11,75 @@ const resolvers: Resolvers = {
         { name, latitude, longitude, categories, photos, address, description },
         { client, loggedInUser }
       ) => {
-        const newCoffeeShopName = name.trim().toLowerCase();
-        const newCoffeeShopSlug = newCoffeeShopName.replace(/ +/g, "-");
-        const exist = await client.coffeeShop.findUnique({
-          where: {
-            slug: newCoffeeShopSlug,
-          },
-          select: { id: true },
-        });
-        if (exist) {
-          return {
-            ok: false,
-            error: "이미 등록된 카페입니다.",
-          };
-        }
-
-        let categoryObj = [];
-        if (categories) {
-          categoryObj = await Promise.all(await getOrCreate(categories));
-        }
-
-        const newCoffeeShop = await client.coffeeShop.create({
-          data: {
-            name,
-            latitude,
-            longitude,
-            address,
-            description,
-            slug: newCoffeeShopSlug,
-            user: {
-              connect: {
-                id: loggedInUser.id,
-              },
+        try {
+          const newCoffeeShopName = name.trim().toLowerCase();
+          const newCoffeeShopSlug = newCoffeeShopName.replace(/ +/g, "-");
+          const exist = await client.coffeeShop.findUnique({
+            where: {
+              slug: newCoffeeShopSlug,
             },
-            ...(categoryObj.length > 0 && {
-              categories: { connectOrCreate: processCategories(categoryObj) },
-            }),
-          },
-        });
+            select: { id: true },
+          });
+          if (exist) {
+            return {
+              ok: false,
+              error: "이미 등록된 카페입니다.",
+            };
+          }
 
-        let coffeeShopPhotos = [];
-        if (photos) {
-          for (let i = 0; i < photos.length; i++) {
-            const photoUrl = await uploadToS3(
-              photos[i],
-              loggedInUser.username,
-              newCoffeeShopSlug
-            );
-            const coffeeShopPhoto = await client.coffeeShopPhoto.create({
-              data: {
-                url: photoUrl,
-                shop: {
-                  connect: {
-                    id: newCoffeeShop.id,
-                  },
+          let categoryObj = [];
+          if (categories) {
+            categoryObj = await Promise.all(await getOrCreate(categories));
+          }
+
+          const newCoffeeShop = await client.coffeeShop.create({
+            data: {
+              name,
+              latitude,
+              longitude,
+              address,
+              description,
+              slug: newCoffeeShopSlug,
+              user: {
+                connect: {
+                  id: loggedInUser.id,
                 },
               },
-            });
-            coffeeShopPhotos.push(coffeeShopPhoto);
+              ...(categoryObj.length > 0 && {
+                categories: { connectOrCreate: processCategories(categoryObj) },
+              }),
+            },
+          });
+
+          let coffeeShopPhotos = [];
+          if (photos) {
+            for (let i = 0; i < photos.length; i++) {
+              const photoUrl = await uploadToS3(
+                photos[i],
+                loggedInUser.username,
+                newCoffeeShopSlug
+              );
+              const coffeeShopPhoto = await client.coffeeShopPhoto.create({
+                data: {
+                  url: photoUrl,
+                  shop: {
+                    connect: {
+                      id: newCoffeeShop.id,
+                    },
+                  },
+                },
+              });
+              coffeeShopPhotos.push(coffeeShopPhoto);
+            }
           }
+          return {
+            ok: true,
+            shop: newCoffeeShop,
+            photos: coffeeShopPhotos,
+          };
+        } catch (error) {
+          console.log(error);
         }
-        return {
-          ok: true,
-          shop: newCoffeeShop,
-          photos: coffeeShopPhotos,
-        };
       }
     ),
   },
