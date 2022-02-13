@@ -8,7 +8,7 @@ const resolvers: Resolvers = {
     createCoffeeShop: protectedResolver(
       async (
         _,
-        { name, latitude, longitude, categories, photos, description },
+        { name, latitude, longitude, categories, photos, address, description },
         { client, loggedInUser }
       ) => {
         const newCoffeeShopName = name.trim().toLowerCase();
@@ -36,6 +36,7 @@ const resolvers: Resolvers = {
             name,
             latitude,
             longitude,
+            address,
             description,
             slug: newCoffeeShopSlug,
             user: {

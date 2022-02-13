@@ -14,13 +14,14 @@ export default gql`
     slug: String!
     latitude: String!
     longitude: String!
+    address: String
     description: String
     photos: [CoffeeShopPhoto]
     user: User!
     categories: [Category!]!
     likes: Int!
     commentNumber: Int!
-    comments: [Comment]
+    comments(lastId: Int): [Comment]
     isMine: Boolean!
     isLiked: Boolean!
     likedBy: User

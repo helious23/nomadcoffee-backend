@@ -26,10 +26,12 @@ const resolvers: Resolvers = {
       client.like.count({ where: { coffeeShopId: id } }),
     commentNumber: ({ id }, _, { client }) =>
       client.comment.count({ where: { coffeeShopId: id } }),
-    comments: async ({ id }, _, { client }) =>
+    comments: async ({ id }, { lastId }, { client }) =>
       client.comment.findMany({
         where: { coffeeShopId: id },
-        take: 3,
+        take: 20,
+        skip: lastId ? 1 : 0,
+        ...(lastId && { cursor: { id: lastId } }),
         orderBy: { createdAt: "desc" },
       }),
     isMine: ({ userId }, _, { loggedInUser }) => {

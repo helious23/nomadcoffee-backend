@@ -11,7 +11,7 @@ const resolvers: Resolvers = {
           user: true,
           shop: true,
         },
-        take: 5,
+        take: 20,
         skip: lastId ? 1 : 0,
         ...(lastId && { cursor: { id: lastId } }),
         orderBy: {

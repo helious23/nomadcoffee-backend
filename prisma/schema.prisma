@@ -43,6 +43,7 @@ model CoffeeShop {
   slug        String            @unique
   latitude    String
   longitude   String
+  address     String?
   description String?
   photos      CoffeeShopPhoto[]
   user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)

@@ -10,7 +10,7 @@ const resolvers: Resolvers = {
     user: ({ userId }, _, { client }) =>
       client.user.findUnique({
         where: { id: userId },
-        select: { username: true },
+        select: { username: true, avatarURL: true },
       }),
   },
 };
