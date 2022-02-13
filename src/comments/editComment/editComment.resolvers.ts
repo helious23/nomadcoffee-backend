@@ -24,7 +24,7 @@ const resolvers: Resolvers = {
         });
         return {
           ok: true,
-          createdAt: newComment.createdAt,
+          id: newComment.id,
         };
       }
     ),
