@@ -90,6 +90,17 @@ const resolvers: Resolvers = {
         totalPages: Math.ceil(totalMyShops / 9),
       };
     },
+
+    likedShops: async ({ id }, _, { client }) =>
+      client.coffeeShop.findMany({
+        where: {
+          likes: {
+            some: {
+              userId: id,
+            },
+          },
+        },
+      }),
   },
 };
 

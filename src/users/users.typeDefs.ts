@@ -18,6 +18,7 @@ export default gql`
     followings(lastId: Int): [User]
     followers(lastId: Int): [User]
     shops(page: Int!): MyShopResult!
+    likedShops: [CoffeeShop]
     totalShops: Int!
     createdAt: String!
     updatedAt: String!
