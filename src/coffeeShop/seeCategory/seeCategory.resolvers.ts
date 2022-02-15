@@ -6,7 +6,11 @@ const resolvers: Resolvers = {
       client.coffeeShop.findMany({
         where: {
           categories: {
-            slug:categoryName
+            some: {
+              slug: {
+                contains: categoryName,
+              },
+            },
           },
         },
         take: 5,
