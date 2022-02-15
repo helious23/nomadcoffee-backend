@@ -12,16 +12,6 @@ const resolvers: Resolvers = {
       }),
     user: ({ userId }, _, { client }) =>
       client.user.findUnique({ where: { id: userId } }),
-    categories: ({ id }, _, { client }) =>
-      client.category.findMany({
-        where: {
-          shops: {
-            some: {
-              id,
-            },
-          },
-        },
-      }),
     likes: ({ id }, _, { client }) =>
       client.like.count({ where: { coffeeShopId: id } }),
     commentNumber: ({ id }, _, { client }) =>
