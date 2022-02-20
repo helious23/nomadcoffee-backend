@@ -1,12 +1,6 @@
 import { gql } from "apollo-server";
 
 export default gql`
-  type MyShopResult {
-    ok: Boolean!
-    error: String
-    results: [CoffeeShop]
-    totalPages: Int
-  }
   type User {
     id: Int!
     username: String!
@@ -17,7 +11,7 @@ export default gql`
     githubUsername: String
     followings(lastId: Int): [User]
     followers(lastId: Int): [User]
-    shops(page: Int!): MyShopResult!
+    shops(offset: Int!): [CoffeeShop]
     likedShops: [CoffeeShop]
     totalShops: Int!
     createdAt: String!
